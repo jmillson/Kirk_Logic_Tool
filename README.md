@@ -1,2 +1,2 @@
 # Kirk_Logic_Tool
-A web app for constructing logic trees or semantic tableaux
+A web app for constructing logic trees a.k.a semantic tableaux

@@ -4,11 +4,23 @@ import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import "bootstrap/dist/css/bootstrap.css";
-import textInputs from "./components/textInputs";
+import Logic from "./components/logic";
+import Logics from "./components/logics";
+import Textbox from "./components/textbox";
+import Heading from "./components/heading";
+import Splitting from "./components/rules/splitting";
+import Stacking from "./components/rules/stacking";
+import BranchClosure from "./components/rules/branchClosure";
 
 ReactDOM.render(
   <React.StrictMode>
-    <textInputs />
+    <Logic />
+    <Logics />
+    <Heading />
+    <Splitting />
+    <Textbox />
+    <Stacking />
+    <BranchClosure />
   </React.StrictMode>,
   document.getElementById("root")
 );

@@ -28,7 +28,8 @@ class Textbox extends Component {
           id="exampleInputLogic"
           aria-describedby="logicHelp"
           placeholder="enter formula"
-          value={this.state.boxtext}
+          onChange={this.props.handleInput}
+          value={this.props.content}
         ></input>
       </div>
     );

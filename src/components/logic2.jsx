@@ -2,7 +2,15 @@ import React, { Component } from "react";
 
 //logic operator buttons
 class Logic2 extends Component {
-  state = {};
+  constructor(props) {
+    super(props);
+    this.handleAddSymbol = this.handleAddSymbol.bind(this);
+  }
+
+  handleAddSymbol() {
+    this.props.handleAdd("∨");
+  }
+
   render() {
     return (
       <div
@@ -14,7 +22,7 @@ class Logic2 extends Component {
         }}
       >
         <button
-          onClick={this.handleIncrement}
+          onClick={this.handleAddSymbol}
           className={"btn btn-primary btn-sm m-2 p-1"}
         >
           ∨

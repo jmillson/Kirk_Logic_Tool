@@ -9,18 +9,16 @@ import Logic7 from "./logic7";
 import Textbox from "./textbox";
 
 class Logics extends Component {
-  state = {};
-
   render() {
     return (
       <div>
-        <Logic />
-        <Logic2 />
-        <Logic3 />
-        <Logic4 />
-        <Logic5 />
-        <Logic6 />
-        <Logic7 />
+        <Logic handleAdd={this.props.handleAdd} />
+        <Logic2 handleAdd={this.props.handleAdd} />
+        <Logic3 handleAdd={this.props.handleAdd} />
+        <Logic4 handleAdd={this.props.handleAdd} />
+        <Logic5 handleAdd={this.props.handleAdd} />
+        <Logic6 handleAdd={this.props.handleAdd} />
+        <Logic7 handleAdd={this.props.handleAdd} />
         <Textbox />
       </div>
     );

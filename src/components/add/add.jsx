@@ -1,26 +1,27 @@
 import React, { Component } from "react";
 
-class BranchClosure extends Component {
+class Add extends Component {
   state = {};
   render() {
     return (
       <div
+        className="App"
         style={{
           position: "absolute",
-          left: "90%",
-          top: "45%",
+          left: "30%",
+          top: "19%",
           transform: "translate(-50%, -50%)",
         }}
       >
         <button
-          onClick={this.handleIncrement}
-          className={"btn btn-warning btn-lg m-2 p-1 container"}
+          onClick={this.handleAddSymbol}
+          className={"btn btn-success btn-sm m-2 p-1 container"}
         >
-          Splitting
+          +
         </button>
       </div>
     );
   }
 }
 
-export default BranchClosure;
+export default Add;

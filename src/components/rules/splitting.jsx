@@ -14,7 +14,7 @@ class Splitting extends Component {
       >
         <button
           onClick={this.handleIncrement}
-          className={"btn btn-warning btn-lg m-2 p-1"}
+          className={"btn btn-warning btn-lg m-2 p-1 container"}
         >
           Splitting
         </button>

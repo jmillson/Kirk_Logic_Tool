@@ -23,7 +23,7 @@ class Logic4 extends Component {
       >
         <button
           onClick={this.handleAddSymbol}
-          className={"btn btn-primary btn-sm m-2 p-1"}
+          className={"btn btn-primary btn-sm m-2 p-1 container-md"}
         >
           ∃
         </button>

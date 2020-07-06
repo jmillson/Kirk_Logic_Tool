@@ -1,13 +1,25 @@
 import React, { Component } from "react";
 
 class Textbox extends Component {
-  state = { boxtext: "" };
+  state = {
+    boxtext: "",
+    addBox: [],
+  };
 
   handleChange = () => {
     // The line below creates a copy of the state, using the spread operator
     let fields = { ...this.state.boxtext };
     fields = fields + "+";
     this.setState({ fields });
+  };
+
+  //Handle box addition click
+  addTextBox = () => {
+    const boxAdded = [...this.state.addBox];
+    boxAdded.push(1);
+    this.setState({
+      addBox: boxAdded,
+    });
   };
 
   render() {
@@ -28,8 +40,21 @@ class Textbox extends Component {
           id="exampleInputLogic"
           aria-describedby="logicHelp"
           placeholder="enter formula"
-          value={this.state.boxtext}
-        ></input>
+          onChange={this.props.handleInput}
+          value={this.props.content}
+        />
+        <button onClick={this.addTextBox}>+</button>
+        {this.state.addBox.map(() => {
+          return (
+            <input
+              type="text"
+              className="form-control"
+              id="exampleInputLogic"
+              aria-describedby="logicHelp"
+              placeholder="ENTER"
+            />
+          );
+        })}
       </div>
     );
   }

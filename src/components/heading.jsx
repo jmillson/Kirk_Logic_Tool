@@ -12,7 +12,7 @@ class Heading extends Component {
           transform: "translate(-50%, -50%)",
         }}
       >
-        <h1>Kirk Logic Tool</h1>
+        <h1 className={"container p-6 m-6"}>Kirk Logic Tool</h1>
       </div>
     );
   }

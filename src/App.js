@@ -1,26 +1,45 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import logo from "./logo.svg";
+import "./App.css";
+import Logic from "./components/logic";
+import Logics from "./components/logics";
+import Textbox from "./components/textbox";
+import Heading from "./components/heading";
+import Splitting from "./components/rules/splitting";
+import Stacking from "./components/rules/stacking";
+import BranchClosure from "./components/rules/branchClosure";
+import Add from "./components/add/add";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export class App extends Component {
+  constructor() {
+    super();
+    this.state = { content: "" };
+    this.handleChange = this.handleChange.bind(this);
+    this.handleAdd = this.handleAdd.bind(this);
+  }
+
+  handleChange(evt) {
+    this.setState({ content: evt.target.value });
+  }
+
+  handleAdd(symbol) {
+    this.setState({ content: this.state.content + symbol });
+  }
+
+  render() {
+    return (
+      <>
+        <Logic handleAdd={this.handleAdd} />
+        <Logics handleAdd={this.handleAdd} />
+        <Heading />
+        <Splitting />
+        <Textbox content={this.state.content} handleInput={this.handleChange} />
+        <Stacking />
+        <BranchClosure />
+        <Add />
+      </>
+    );
+  }
 }
 
 export default App;

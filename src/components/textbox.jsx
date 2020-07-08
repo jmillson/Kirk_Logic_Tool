@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Add from "./add/add";
 
 class Textbox extends Component {
   state = {
@@ -43,7 +44,8 @@ class Textbox extends Component {
           onChange={this.props.handleInput}
           value={this.props.content}
         />
-        <button onClick={this.addTextBox}>+</button>
+        //clickevent is made up name (property)
+        <Add clickEvent={this.addTextBox}>+</Add>
         {this.state.addBox.map(() => {
           return (
             <input

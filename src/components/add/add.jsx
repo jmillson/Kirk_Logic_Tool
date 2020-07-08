@@ -14,7 +14,7 @@ class Add extends Component {
         }}
       >
         <button
-          onClick={this.handleAddSymbol}
+          onClick={this.props.clickEvent}
           className={"btn btn-success btn-sm m-2 p-1 container"}
         >
           +

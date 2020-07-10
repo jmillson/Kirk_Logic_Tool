@@ -8,7 +8,7 @@ import Heading from "./components/heading";
 import Splitting from "./components/rules/splitting";
 import Stacking from "./components/rules/stacking";
 import BranchClosure from "./components/rules/branchClosure";
-import Add from "./components/add/add";
+//import Add from "./components/add/add";
 
 export class App extends Component {
   constructor() {
@@ -36,7 +36,6 @@ export class App extends Component {
         <Textbox content={this.state.content} handleInput={this.handleChange} />
         <Stacking />
         <BranchClosure />
-        <Add />
       </>
     );
   }

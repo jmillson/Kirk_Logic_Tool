@@ -44,17 +44,23 @@ class Textbox extends Component {
           onChange={this.props.handleInput}
           value={this.props.content}
         />
-        //clickevent is made up name (property)
-        <Add clickEvent={this.addTextBox}>+</Add>
+        <Add
+          className={"btn btn-success btn-sm m-2 p-1 container"}
+          clickEvent={this.addTextBox}
+        >
+          +
+        </Add>
         {this.state.addBox.map(() => {
           return (
             <input
+              paddingTop
               type="text"
               className="form-control"
               id="exampleInputLogic"
               aria-describedby="logicHelp"
               placeholder="ENTER"
             />
+            //clickevent is made up name (property)
           );
         })}
       </div>

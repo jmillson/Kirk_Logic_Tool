@@ -5,6 +5,7 @@ class Textbox extends Component {
   state = {
     boxtext: "",
     addBox: [],
+    button: "",
   };
 
   handleChange = () => {
@@ -53,7 +54,7 @@ class Textbox extends Component {
         {this.state.addBox.map(() => {
           return (
             <input
-              paddingTop
+              style={{ margin: "15px" }}
               type="text"
               className="form-control"
               id="exampleInputLogic"

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Kirl Tool for Logic Trees</title>
+	<link rel="stylesheet" type="text/css" href="css/reset.css">
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+<body>
+	<nav class="clearfix">
+		<a href="#">Home</a>
+		<a href="#">The Tool</a>
+		<a href="#">How-To Guide</a>
+		<a href="#">About the Project</a>
+	</nav>
+
+	<header>
+		<div class="header_box">
+		</div>
+
+		<div id="h1_box">
+		<h1>An Introduction</h1>	
+		</div>
+
+		<div class="header_box">
+		</div>
+	</header>	
+
+	<main>
+		<section id="one">
+			<div>
+				<h2>Why Truth Trees?</h2>
+			</div>
+			<div class="paragraph">
+				<p>Unlike truth tables, truth trees represent only the assignments of True to sentences. Starting from the original statement, we ask at each step, “Under what conditions (or interpretations) would this statement be True?” Then, we write down those conditions in a systematic way. At each step, then, we only indicate when a statement would be ‘True’, NOT ‘False’. When we complete a tree, we “read up” through the “branches” for the truth values that would make the statement true. So a big difference between tables and trees is that, while a table begins with showing all possible combinations of truth values, a tree shows those values that would make the statement true (if it is possible for it to be true).</p>
+			</div>
+
+			<!--<div class="images">
+				<img src="images/tree.png">
+			</div> -->
+		</section>
+
+		<section id="two">	
+			<div>
+				<h2>How Do Truth Trees Work?</h2>
+			</div>
+			<figure>
+				<iframe width="560" height="315" src="https://www.youtube.com/embed/C-u5WLJ9Yk4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+			</figure>
+			<figcaption>
+				<p>
+					Unlike conventional trees, truth trees grow downwards.
+					The initial set of sentences at the top form the root.
+					We apply tree rules to these sentences to grow the tree.
+					The tree rules represent the different conditions under which a type of sentence in TFL is true.
+					By applying these rules, we are able to decompose complex sentences into simpler ones.
+					The rules either tell us to ‘stack’ new sentences, one on top of another, or to ‘branch’ them.
+					Once a rule has been applied to a sentence the sentence is checked (X) to indicate that we’re done with it.
+
+					To the left of the tree is a column that shows the line number for each rule application of the tree.
+					To the right of the tree is our 'citation' process.
+					The rule applied to produce the product on that line is listed, as well as the line number of the statement which was broken down.
+
+					A branch is the set of sentences obtained by starting at the bottom of the tree and reading upward through the tree along a series of lines.
+					The sentences at the end of each branch are called leaves.
+					A completed branch is a branch all of whose complex sentences have been checked and whose leaf is either an atomic sentence or the negation of an atomic sentence.
+					Such sentences (atoms and their negations) are called literals.
+					A completed tree is a tree whose branches are all completed.
+					Each branch of a completed tree represents a truth value assignment—a row of a truth table.
+				</p>
+			</figcaption>
+		</section>
+
+	</main>
+	<footer></footer>
+</body>
+</html>

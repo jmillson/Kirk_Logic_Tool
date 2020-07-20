@@ -1,0 +1,330 @@
+/*global settings*/
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/*background sizing and color*/
+body {
+  width: 100%;
+  height: 100vh;
+  background: rgb(245, 205, 255);
+}
+
+.App {
+  width: 100%;
+  height: 100vh;
+  display: grid;
+  display: -moz-grid;
+  display: -ms-grid;
+  grid-auto-columns: 1fr 3fr 1fr; /*three main columns of the page*/
+}
+
+/*main title*/
+h1 {
+  grid-row-start: 1;
+  grid-row-end: 1;
+  grid-column-start: 1;
+  grid-column-end: 4;
+  display: flex;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  align-items: center;
+  font-size: 3rem;
+  font-weight: 400;
+  padding: 20px 10px;
+}
+
+/*operator and rules title*/
+h2 {
+  font-size: 1.7rem;
+}
+
+/*left column of the page*/
+.left {
+  grid-row-start: 2;
+  grid-row-end: 10;
+  grid-column-start: 1;
+  grid-column-end: 1;
+  padding: 10px;
+  display: grid;
+  display: -moz-grid;
+  display: -ms-grid;
+  justify-items: center;
+}
+
+/*middle of the page*/
+.middle {
+  grid-row-start: 2;
+  grid-row-end: 10;
+  grid-column-start: 2;
+  grid-column-end: 2;
+  text-align: center;
+  padding: 10px;
+}
+
+/*right side of the page*/
+.right {
+  grid-row-start: 2;
+  grid-row-end: 10;
+  grid-column-start: 3;
+  grid-column-end: 3;
+  justify-content: center;
+  padding: 10px;
+  display: grid;
+  display: -moz-grid;
+  display: -ms-grid;
+}
+
+/*.App h1, .App div {
+    border: 1px red solid;
+}*/
+
+.right h2 {
+  text-align: center;
+}
+
+.right .rule-box {
+  width: 200px;
+  height: 180px;
+  border: 2px black solid;
+  border-radius: 15px;
+  background: white;
+  cursor: pointer;
+}
+
+.left .operator-btn {
+  width: 50px;
+  height: 50px;
+  border: 2px black solid;
+  border-radius: 10px;
+  background: white;
+  display: flex;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  font-weight: 700;
+  cursor: pointer;
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently*/
+}
+
+.middle .wrap {
+  height: auto;
+  display: grid;
+  display: -moz-grid;
+  display: -ms-grid;
+  grid-auto-flow: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+input[type="text"] {
+  width: 300px;
+  padding: 5px;
+  margin: 10px;
+  height: 50px;
+  border: 2px black solid;
+  border-radius: 10px;
+  font-size: 2rem;
+  color: black;
+  outline: none;
+}
+
+input[type="text"]::placeholder,
+input[type="text"]::-moz-placeholder,
+input[type="text"]::-webkit-input-placeholder {
+  color: gray;
+}
+
+input[type="text"]:focus {
+  border: 3px black solid;
+}
+
+.checkbox {
+  width: 25px;
+  height: 25px;
+  border: 3px black double;
+  background: white;
+  position: relative;
+}
+
+.checkbox .pipe {
+  position: absolute;
+  font-size: 3rem;
+  color: green;
+  cursor: pointer;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  /*display: none; /*this is needed to toggle in react*/
+}
+
+.middle .operator-btn {
+  width: 50px;
+  height: 50px;
+  border: 2px black solid;
+  border-radius: 10px;
+  background: white;
+  display: flex;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin: 10px 0;
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently*/
+}
+
+.middle span {
+  font-size: 2rem;
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently*/
+}
+
+.right .rbone {
+  display: grid;
+  display: -moz-grid;
+  display: -ms-grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  justify-items: center;
+  align-items: center;
+}
+
+.right .rule-box {
+  font-size: 3rem;
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently*/
+}
+
+.right .rbtwo,
+.right .rbthree {
+  display: grid;
+  display: -moz-grid;
+  display: -ms-grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  justify-items: center;
+  align-items: center;
+}
+
+.right .operator-btn {
+  width: 40px;
+  height: 40px;
+  border: 2px black solid;
+  border-radius: 10px;
+  background: white;
+  display: flex;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.rule-box .q,
+.rule-box .t {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently*/
+}
+
+.middle .rule {
+  width: 70px;
+  height: 40px;
+  border: 3px black solid;
+  background: rgb(192, 141, 45);
+  display: flex;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  position: absolute;
+  right: 0;
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently*/
+}
+
+.middle .rule-items {
+  width: 70px;
+  height: 120px;
+  display: grid;
+  display: -moz-grid;
+  display: -ms-grid;
+  grid-template-columns: auto auto;
+  position: absolute;
+  right: 0;
+  margin-top: 160px;
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently*/
+  cursor: pointer;
+  z-index: 10;
+}
+
+.rule-items p {
+  width: 35px;
+  height: 20px;
+  background: white;
+  border: 1px black solid;
+  font-size: 1.3rem;
+  display: flex;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.rule-items p:hover {
+  background: purple;
+  color: white;
+}
+
+.applied-yellow-box-symbol-number {
+  display: flex;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  right: 0;
+  font-size: 2rem;
+}

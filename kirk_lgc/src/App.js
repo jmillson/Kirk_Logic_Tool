@@ -1,545 +1,350 @@
-import React from "react";
-import "./App.css";
+import React from 'react';
+import './App.css';
+
+import LogicalOperators from './components/left/LogicalOperators';
+import FieldsTogether from './components/middle/FieldsTogether';
+import OperatorButton from './components/middle/assets/OperatorButton';
+import SplittingRule from './components/right/splittingRule/SplittingRule';
+import StackingRule from './components/right/stackingRule/StackingRule';
+import BranchClosure from './components/right/branchClosure/BranchClosure';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      formula1: "", //contains the input field text 1
-      formula2: "", //contains the input field text 2
-      formula3: "", //contains the input field text 3
-      formula4: "", //contains the input field text 4
-      formula5: "", //contains the input field text 5
-      formula6: "", //contains the input field text 6
-      formula7: "", //contains the input field text 7
-      textInputIterator: 1, //shows the number before the input field
-      textInputIterator2: 1, //shows the number before the input field within the stacking rule
-      clickedInputId: null, //input text field gets an id between 1-7 onclick event
-      checkboxPipe1: false, //checkbox default unchecked=false, checked=true
-      checkboxPipe2: false, //checkbox default unchecked=false, checked=true
-      checkboxPipe3: false, //checkbox default unchecked=false, checked=true
-      checkboxPipe4: false, //checkbox default unchecked=false, checked=true
-      checkboxPipe5: false, //checkbox default unchecked=false, checked=true
-      checkboxPipe6: false, //checkbox default unchecked=false, checked=true
-      checkboxPipe7: false, //checkbox default unchecked=false, checked=true
-      checkboxChecked: [], //checked checkbox id added to this array
-      ruleNumber: "0", // if clicked on splitting rule=1, stacking rule=2, barnch closure=3
-      isRuleBoxClicked: false, //this is the orange rule box, if clicked it is true
-      isRuleBoxClicked2: false, //this is the orange rule box, if clicked it is true
-      orangeRuleBoxNumber: null, //gives back the number of in which place the symbol is in the orangeRuleBoxSymbolsArray
-    };
+      focusField: null,                 // turns to a number depending on which field is clicked
+      ruleOrder: [],                    // makes an array of 1 and 2's. 1: splitting 2: stacking
+      plusButtonMain: true,             // makes the plus button work if it's true
+      expandArray: [],           
+      inputField: [                     // object of all the necessary data to one line
+        {
+          focusInput1: false,           // true if input field is clicked
+          fieldNumber: 1,               // gives back which row is clicked
+          fieldText1: "",               // contains the text input
+          checkbox1: false,             // if checkbox checked it's true
+          checkbox1Confirmed: false,
+          orangeRuleItem: "",
+          type: "single"                // input line: single / splitting / stacking
+        }
+      ]
+    }
   }
 
-  clickPlusButton = () => {
-    //function to make + button work
-    if (this.state.ruleNumber === "2") {
-      //if stacking rule clicked
-      this.setState({
-        //stops adding more input fields, it adds stacking rule fields after | line
-        textInputIterator: this.state.textInputIterator,
-        textInputIterator2: this.state.textInputIterator2 + 1,
-      });
-    } else {
-      this.setState({
-        //if stacking rule not clicked, it keeps adding normal input fields
-        textInputIterator: this.state.textInputIterator + 1,
-      });
+  orderRules = (id) => {
+      this.state.inputField.map((arrayItem) => {
+        let rule = null;
+        if (arrayItem.checkbox1 || arrayItem.checkbox2 || arrayItem.checkbox3 || arrayItem.checkbox4) {
+          rule = this.setState({
+            ruleOrder: [...this.state.ruleOrder, id],
+            plusButtonMain: true
+          });
+        }
+        return rule;
+      })
+  }
+
+  operatorButton = () => {                                                        // this is the code of the '+' button
+    if (this.state.ruleOrder.length === 0) {                                      // if it is just the single (initial) line... 
+      this.setState({inputField: [...this.state.inputField,
+        {
+          focusInput1: false,
+          fieldNumber: this.state.inputField.length + 1,                          // ...it is iterated by cliciking the button
+          fieldText1: "",
+          checkbox1: false,                                                       // ...and adds to inputField object in state
+          checkbox1Confirmed: false,
+          orangeRuleItem: "",
+          type: "single"
+        }
+      ]})
     }
-  };
-
-  inputText = (event) => {
-    //this function checks which input text is used and change its value in state
-    console.log(this.state);
-    if (event.target.id === "1") {
-      this.setState({ formula1: event.target.value });
-    } else if (event.target.id === "2") {
-      this.setState({ formula2: event.target.value });
-    } else if (event.target.id === "3") {
-      this.setState({ formula3: event.target.value });
-    } else if (event.target.id === "4") {
-      this.setState({ formula4: event.target.value });
-    } else if (event.target.id === "5") {
-      this.setState({ formula5: event.target.value });
-    } else if (event.target.id === "6") {
-      this.setState({ formula6: event.target.value });
-    } else if (event.target.id === "7") {
-      this.setState({ formula7: event.target.value });
+    const lastNum = this.state.ruleOrder.length -1;                               // gives back how many lines are in the page
+    if (this.state.ruleOrder[lastNum] === 1 && this.state.plusButtonMain) {       // if the last line is "single" line and plus button is true (working)... (working if stacking or splitting rule is clicked before)
+      this.setState({inputField: [...this.state.inputField,
+        {
+          focusInput1: false,
+          focusInput2: false,
+          focusInput3: false,
+          focusInput4: false,
+          fieldNumber: this.state.inputField.length + 1,
+          fieldText1: "",
+          fieldText2: "",                                                         // ... this new objected adds to inputField object
+          fieldText3: "",
+          fieldText4: "",
+          fieldNumberAndOrangeRuleItem: "",
+          checkbox1: false,
+          checkbox2: false,
+          checkbox3: false,
+          checkbox4: false,
+          checkbox1Confirmed: false,
+          checkbox2Confirmed: false,
+          checkbox3Confirmed: false,
+          checkbox4Confirmed: false,
+          expanded: false,
+          orangeRuleBox: false,
+          orangeRuleBox2: false,
+          orangeRuleItem: "",
+          type: "splitting"                                                       // this is an {object} of a splitting line
+        }
+      ]})
+      this.setState({plusButtonMain: false});                                     // eventually it turns on the '+' button
+    } else if (this.state.ruleOrder[lastNum] === 2 && this.state.plusButtonMain) {// if the last line is a splitting line and '+' working (as another rule is clicked)...
+      this.setState({inputField: [...this.state.inputField,
+        {
+          focusInput1: false,
+          focusInput2: false,
+          fieldNumber: this.state.inputField.length + 1,
+          fieldText1: "",
+          fieldText2: "",
+          fieldNumberAndOrangeRuleItem: "",
+          checkbox1: false,                                                       // ...then this time a stacking line is applied and adds as an object to inputField array
+          checkbox2: false,
+          checkbox1Confirmed: false,
+          checkbox2Confirmed: false,
+          expanded: false,
+          orangeRuleBox: false,
+          orangeRuleBox2: false,
+          orangeRuleItem: "",
+          type: "stacking"
+        }
+      ]})
+      this.setState({plusButtonMain: false});                                     // '+' button turnes off each time in order to prevebt unnecessary actions
     }
-  };
+  }
 
-  clickOperator = (event) => {
-    //this gives the symbol into text field based on which symbol button is clicked
-    if (this.state.clickedInputId === "1") {
-      this.setState({ formula1: this.state.formula1 + event }); // these are the input fields updated with the clicked symbol
-    } else if (this.state.clickedInputId === "2") {
-      this.setState({ formula2: this.state.formula2 + event }); // these are the input fields updated with the clicked symbol
-    } else if (this.state.clickedInputId === "3") {
-      this.setState({ formula3: this.state.formula3 + event }); // these are the input fields updated with the clicked symbol
-    } else if (this.state.clickedInputId === "4") {
-      this.setState({ formula4: this.state.formula4 + event }); // these are the input fields updated with the clicked symbol
-    } else if (this.state.clickedInputId === "5") {
-      this.setState({ formula5: this.state.formula5 + event }); // these are the input fields updated with the clicked symbol
-    } else if (this.state.clickedInputId === "6") {
-      this.setState({ formula6: this.state.formula6 + event }); // these are the input fields updated with the clicked symbol
-    } else if (this.state.clickedInputId === "7") {
-      this.setState({ formula7: this.state.formula7 + event }); // these are the input fields updated with the clicked symbol
+  fieldNumberAndOrangeRuleItem = (fieldNum, orangeRuIt) => {
+    const fieldIndex = this.state.focusField - 1;
+    let newArray = [...this.state.inputField];
+    newArray[fieldIndex] = {...newArray[fieldIndex], fieldNumberAndOrangeRuleItem: fieldNum + orangeRuIt};
+    this.setState({inputField: newArray});
+  }
+
+  checkboxConfirmer = (fieldNum, chckbxCnfrmd) => {
+    let newArray = [...this.state.inputField];
+    const lastState = this.state.inputField[this.state.inputField.length-1].orangeRuleBox;
+    const lastState2 = this.state.inputField[this.state.inputField.length-1].orangeRuleBox2;
+    if (chckbxCnfrmd === 1 && (lastState || lastState2)) {
+      newArray[fieldNum] = {...newArray[fieldNum], checkbox1: false, checkbox1Confirmed: true};
+      this.setState({inputField: newArray});
     }
-  };
-
-  clickInput = (event) => {
-    //input text field gets the id here upon clicking
-    this.setState({ clickedInputId: event.target.id });
-  };
-
-  clickCheckbox = (event) => {
-    //updated checkbox state based on which one is checked
-    if (event.target.id === "1") {
-      this.setState({ checkboxPipe1: !this.state.checkboxPipe1 });
-    } else if (event.target.id === "2") {
-      this.setState({ checkboxPipe2: !this.state.checkboxPipe2 });
-    } else if (event.target.id === "3") {
-      this.setState({ checkboxPipe3: !this.state.checkboxPipe3 });
-    } else if (event.target.id === "4") {
-      this.setState({ checkboxPipe4: !this.state.checkboxPipe4 });
-    } else if (event.target.id === "5") {
-      this.setState({ checkboxPipe5: !this.state.checkboxPipe5 });
-    } else if (event.target.id === "6") {
-      this.setState({ checkboxPipe6: !this.state.checkboxPipe6 });
-    } else if (event.target.id === "7") {
-      this.setState({ checkboxPipe7: !this.state.checkboxPipe7 });
+    if (chckbxCnfrmd === 2 && (lastState || lastState2)) {
+      newArray[fieldNum] = {...newArray[fieldNum], checkbox2: false, checkbox2Confirmed: true};
+      this.setState({inputField: newArray});
     }
-  };
-
-  isAnyCheckboxChecked = (apply, notApply) => {
-    //checks if any checkbox checked then given rule applied
-    if (
-      this.state.checkboxPipe1 ||
-      this.state.checkboxPipe2 ||
-      this.state.checkboxPipe3 ||
-      this.state.checkboxPipe4 ||
-      this.state.checkboxPipe5 ||
-      this.state.checkboxPipe6 ||
-      this.state.checkboxPipe7
-    ) {
-      return apply; //true if any of ther above is checked (true)
-    } else {
-      return notApply;
-    } //ture if neither of the above is checked
-  };
-
-  isRuleBoxClicked = () => {
-    //if the orange rulebox clicked...
-    this.setState({ isRuleBoxClicked: !this.state.isRuleBoxClicked }); //it toggles the dropdown symbol table...
-    this.setState({ isRuleBoxClicked2: false }); //and it keeps the second orange rulebox drowdown closed
-  };
-
-  isRuleBoxClicked2 = () => {
-    //if the second orange rulebox clicked...
-    this.setState({ isRuleBoxClicked2: !this.state.isRuleBoxClicked2 }); //it toggles the second drowdown...
-    this.setState({ isRuleBoxClicked: false }); //and keeps the first one closed
-  };
-
-  ruleBox = (event) => {
-    //it gives back the id of the rulebox (splitting/stacking/branch)
-    if (this.isAnyCheckboxChecked(true, false)) {
-      //if any checkbox is checked...
-      this.setState({ ruleNumber: event.target.id }); //checkes which rule of the three is clicked
-      //console.log(this.state.checkboxChecked)
+    if (chckbxCnfrmd === 3 && (lastState || lastState2)) {
+      newArray[fieldNum] = {...newArray[fieldNum], checkbox3: false, checkbox3Confirmed: true};
+      this.setState({inputField: newArray});
     }
-  };
+    if (chckbxCnfrmd === 4 && (lastState || lastState2)) {
+      newArray[fieldNum] = {...newArray[fieldNum], checkbox4: false, checkbox4Confirmed: true};
+      this.setState({inputField: newArray});
+    }
+  }
 
-  orangeRuleBoxSymbolsClick = (event) => {
-    //updates the id of the orange rulebox in state
-    this.setState({ orangeRuleBoxNumber: event.target.id });
-  };
+  orangeRuleBox = (x) => {
+    const fieldIndex = this.state.focusField - 1;
+    let newArray = [...this.state.inputField];
+    if (x === 1) {
+      newArray[fieldIndex] = {...newArray[fieldIndex], orangeRuleBox: !newArray[fieldIndex].orangeRuleBox, orangeRuleBox2: false};
+    }
+    if (x === 2) {
+      newArray[fieldIndex] = {...newArray[fieldIndex], orangeRuleBox2: !newArray[fieldIndex].orangeRuleBox2, orangeRuleBox: false};
+    }
+    this.setState({inputField: newArray});
+  }
 
-  logicalOperatorsArray = ["¬", "∧", "∨", "→", "↔", "∀", "∃"]; //array of all the symbols for the button on the left
+  logicalOperatorButton = (symbol) => {                                           // function of the logical operator buttons on the left of the page
+    const fieldIndex = this.state.focusField - 1;
+    let newArray = [...this.state.inputField];
+    if (newArray[fieldIndex].type === "single") {
+      newArray[fieldIndex] = {...newArray[fieldIndex], fieldText1: newArray[fieldIndex].fieldText1 + symbol};
+      this.setState({inputField: newArray});
+    } else if (newArray[fieldIndex].type === "splitting") {
+            if (newArray[fieldIndex].focusInput1) {
+              newArray[fieldIndex] = {...newArray[fieldIndex], fieldText1: newArray[fieldIndex].fieldText1 + symbol};
+            } else if (newArray[fieldIndex].focusInput2) {
+              newArray[fieldIndex] = {...newArray[fieldIndex], fieldText2: newArray[fieldIndex].fieldText2 + symbol};
+            } else if (newArray[fieldIndex].focusInput3) {
+              newArray[fieldIndex] = {...newArray[fieldIndex], fieldText3: newArray[fieldIndex].fieldText3 + symbol};
+            } else if (newArray[fieldIndex].focusInput4) {
+              newArray[fieldIndex] = {...newArray[fieldIndex], fieldText4: newArray[fieldIndex].fieldText4 + symbol};
+            }
+      this.setState({inputField: newArray});
+    } else if (newArray[fieldIndex].type === "stacking") {
+            if (newArray[fieldIndex].focusInput1) {
+              newArray[fieldIndex] = {...newArray[fieldIndex], fieldText1: newArray[fieldIndex].fieldText1 + symbol};
+            } else if (newArray[fieldIndex].focusInput2) {
+              newArray[fieldIndex] = {...newArray[fieldIndex], fieldText2: newArray[fieldIndex].fieldText2 + symbol};
+            }
+      this.setState({inputField: newArray});
+    }
+  }
 
-  logicalOperators = this.logicalOperatorsArray.map((symbol, index) => {
-    //generates the symbol buttons according to the logicalOperatorsArray
-    return (
-      <div
-        key={index}
-        className="operator-btn"
-        onClick={() => this.clickOperator(symbol)}
-      >
-        {symbol}
-      </div>
-    );
-  });
+  /*focusFieldNumber = (number) => {
+    this.setState({focusField: number});
+    console.log("focusfield number in focusFieldNumber: ", this.state.focusField)
+  }*/
 
-  orangeRuleBoxSymbolsArray = [
-    "∧",
-    "¬∨",
-    "∨",
-    "¬∧",
-    "→",
-    "¬→",
-    "↔",
-    "¬↔",
-    "¬¬",
-    "∀",
-    "∃",
-    "",
-  ]; //array of all symbols in dropdown menu of the orange rule box
+  focusFieldNumber = (number) => {                                                          // function to set the active clicked field's number in state
+      this.setState({focusField: number});
+      console.log('field number: ', number);
+  }
+ 
+  whichTextField = (fieldId) => {                                                           // based on which field is active it turnes on and off all the other fields...
+    const number = this.state.focusField - 1;                                               // ...to put the symbol to the right field
+    console.log('textfield: ', fieldId)
+    if (fieldId === "1") {
+      let newArray = [...this.state.inputField];
+      newArray[number] = {...newArray[number], focusInput1: true, focusInput2: false, focusInput3: false, focusInput4: false};
+      this.setState({inputField: newArray});
+    } else if (fieldId === "2") {
+      let newArray = [...this.state.inputField];
+      newArray[number] = {...newArray[number], focusInput1: false, focusInput2: true, focusInput3: false, focusInput4: false};
+      this.setState({inputField: newArray});
+    } else if (fieldId === "3") {
+      let newArray = [...this.state.inputField];
+      newArray[number] = {...newArray[number], focusInput1: false, focusInput2: false, focusInput3: true, focusInput4: false};
+      this.setState({inputField: newArray});
+    } else if (fieldId === "4") {
+      let newArray = [...this.state.inputField];
+      newArray[number] = {...newArray[number], focusInput1: false, focusInput2: false, focusInput3: false, focusInput4: true};
+      this.setState({inputField: newArray});
+    }
+  }
 
-  orangeRuleBox = (x, y) => [
-    //this function contains all the orange rule box along with its dropdown design
-    <div key="1" className="rule" onClick={x}>
-      RULE▾
-    </div>,
-    <div
-      key="2"
-      className="rule-items"
-      style={y ? { display: "grid" } : { display: "none" }}
-    >
-      {this.orangeRuleBoxSymbolsArray.map((symbol, index) => {
-        //generates the symbol buttons according to the orangeRuleBoxSymbolsArray
-        return (
-          <p
-            key={index}
-            id={index + 1}
-            onClick={this.orangeRuleBoxSymbolsClick}
-          >
-            {symbol}
-          </p>
-        );
-      })}
-    </div>,
-  ];
+  inputChanger = (fieldText, fieldNumber) => {                                                  // changes the first text input value of any kind of the three types of lines
+    const fieldIndex = this.state.inputField.findIndex(id =>
+      id.fieldNumber === fieldNumber);
+    let newArray = [...this.state.inputField];
+    newArray[fieldIndex] = {...newArray[fieldIndex], fieldText1: fieldText};
+    this.setState({inputField: newArray});
+  }
+
+  inputChanger2 = (fieldText, fieldNumber) => {                                                 // changes the second text input value of any kind of the three types of lines
+    const fieldIndex = this.state.inputField.findIndex(id =>
+      id.fieldNumber === fieldNumber);
+    let newArray = [...this.state.inputField];
+    newArray[fieldIndex] = {...newArray[fieldIndex], fieldText2: fieldText};
+    this.setState({inputField: newArray});
+  }
+
+  inputChanger3 = (fieldText, fieldNumber) => {                                                 // changes the third text input value of any kind of the three types of lines
+    const fieldIndex = this.state.inputField.findIndex(id =>
+      id.fieldNumber === fieldNumber);
+    let newArray = [...this.state.inputField];
+    newArray[fieldIndex] = {...newArray[fieldIndex], fieldText3: fieldText};
+    this.setState({inputField: newArray});
+  }
+
+  inputChanger4 = (fieldText, fieldNumber) => {                                                 // changes the fourth text input value of any kind of the three types of lines
+    const fieldIndex = this.state.inputField.findIndex(id =>
+      id.fieldNumber === fieldNumber);
+    let newArray = [...this.state.inputField];
+    newArray[fieldIndex] = {...newArray[fieldIndex], fieldText4: fieldText};
+    this.setState({inputField: newArray});
+  }
+
+  checkboxChanger = (fieldNumber) => {                                                          // toggles the first checkbox of any kind of the three types of lines
+    const fieldIndex = this.state.inputField.findIndex(id =>
+      id.fieldNumber === fieldNumber);
+    let newArray = [...this.state.inputField];
+    newArray[fieldIndex] = {...newArray[fieldIndex], checkbox1: !newArray[fieldIndex].checkbox1};
+    this.setState({inputField: newArray});
+  }
+
+  checkboxChanger2 = (fieldNumber) => {                                                         // toggles the second checkbox of any kind of the three types of lines
+    const fieldIndex = this.state.inputField.findIndex(id =>
+      id.fieldNumber === fieldNumber);
+    let newArray = [...this.state.inputField];
+    newArray[fieldIndex] = {...newArray[fieldIndex], checkbox2: !newArray[fieldIndex].checkbox2};
+    this.setState({inputField: newArray});
+  }
+
+  checkboxChanger3 = (fieldNumber) => {                                                         // toggles the third checkbox of any kind of the three types of lines
+    const fieldIndex = this.state.inputField.findIndex(id =>
+      id.fieldNumber === fieldNumber);
+    let newArray = [...this.state.inputField];
+    newArray[fieldIndex] = {...newArray[fieldIndex], checkbox3: !newArray[fieldIndex].checkbox3};
+    this.setState({inputField: newArray});
+  }
+
+  checkboxChanger4 = (fieldNumber) => {                                                         // toggles the fourth checkbox of any kind of the three types of lines
+    const fieldIndex = this.state.inputField.findIndex(id =>
+      id.fieldNumber === fieldNumber);
+    let newArray = [...this.state.inputField];
+    newArray[fieldIndex] = {...newArray[fieldIndex], checkbox4: !newArray[fieldIndex].checkbox4};
+    this.setState({inputField: newArray});
+  }
+
+  expanding = () => {                                                                           // it toggles a switch stating if a splitting or stacking line is expanded to two lines
+    const fieldIndex = this.state.inputField.length - 1;
+    let newArray = [...this.state.inputField];
+    newArray[fieldIndex] = {...newArray[fieldIndex], expanded: !newArray[fieldIndex].expanded};
+    this.setState({inputField: newArray});
+    console.log(this.state)
+  }
+
+  orangeRuleItem = (symbol) => {
+    const num = this.state.focusField - 1;
+    let anotherArray = [...this.state.inputField];
+    anotherArray[num] = {...anotherArray[num], orangeRuleItem: symbol};
+    this.setState({inputField: anotherArray});
+  }
+
+  singleInputChecker = () => {
+    let thereIsAtLeastOne = false;
+    this.state.inputField.map((type) => {
+      if (type.type === "single" && !type.checkbox1Confirmed) {
+        thereIsAtLeastOne = true;
+      }
+      return thereIsAtLeastOne;
+    })
+    return thereIsAtLeastOne;
+  }
 
   render() {
-    const inputField = []; //this array contains all the input fields along with the iteration number on its left and the checkbox on its right side
-    const formulaArray = [
-      this.state.formula1,
-      this.state.formula2,
-      this.state.formula3,
-      this.state.formula4,
-      this.state.formula5,
-      this.state.formula6,
-      this.state.formula7,
-    ];
-    //the formulaArray contains all the formula input text field state names in order to use it easily in the 'for' loop
-    const checkPipeArray = [
-      this.state.checkboxPipe1,
-      this.state.checkboxPipe2,
-      this.state.checkboxPipe3,
-      this.state.checkboxPipe4,
-      this.state.checkboxPipe5,
-      this.state.checkboxPipe6,
-      this.state.checkboxPipe7,
-    ];
-    //the checkPipeArray contains all the checkbox state in order to use it easily in the 'for' loop
-    for (let index = 1; index <= this.state.textInputIterator; index++) {
-      if (checkPipeArray[index - 1]) {
-        this.state.checkboxChecked.push(index);
-      }
-      inputField.push(
-        //this adds each line of tehxfields to the inputField array in the 'for' loop
-        <div className="wrap" key={index}>
-          <span>{index}.</span>
-          {/*iteration number on the left side of input text*/}
-          <input
-            id={index}
-            onChange={this.inputText}
-            onClick={this.clickInput}
-            type="text"
-            placeholder="Enter a formula"
-            value={formulaArray[index - 1]}
-          >
-            {/*unique value for each input field*/}
-          </input>
-          <div
-            style={
-              checkPipeArray[index - 1] &&
-              this.state.ruleNumber !== "0" &&
-              this.state.orangeRuleBoxNumber !== null
-                ? { border: "initial", background: "initial" }
-                : {}
-            }
-            className="checkbox"
-            onClick={
-              checkPipeArray[index - 1] &&
-              this.state.ruleNumber !== "0" &&
-              this.state.orangeRuleBoxNumber !== null
-                ? null
-                : this.clickCheckbox
-            }
-            id={index}
-          >
-            <span
-              id={index}
-              style={{
-                display: `${checkPipeArray[index - 1] ? "initial" : "none"}`,
-              }}
-              className="pipe"
-            >
-              ✔
-            </span>
-          </div>
-          {/*if checkbox checked & a rule is clicked & a rule in the orange rule box's dropdown is clicked then checkbox style hidden and clicking functionality suspended*/}
-        </div>
-      );
-    }
-
-    if (
-      this.state.ruleNumber === "2" &&
-      this.isAnyCheckboxChecked(true, false)
-    ) {
-      //if Stacking rule is clicked & any checkbox is checked...
-      if (this.state.textInputIterator2 === 1) {
-        //if just 1 text field shown after stacking rule
-        inputField.push(
-          <div key={inputField.length + 1}>
-            {/*first input field line of stacking rule*/}
-            <div className="wrap">
-              <span>|</span>
-            </div>
-            <div className="wrap">
-              <span>{inputField.length + 1}.</span>
-              <input
-                id={inputField.length + 1}
-                onChange={this.inputText}
-                onClick={this.clickInput}
-                type="text"
-                placeholder="Enter a formula"
-                value={formulaArray[inputField.length]}
-              ></input>
-              <div
-                className="checkbox"
-                onClick={this.clickCheckbox}
-                id={inputField.length + 1}
-              >
-                <span
-                  id={inputField.length + 1}
-                  style={{
-                    display: `${
-                      checkPipeArray[inputField.length] ? "initial" : "none"
-                    }`,
-                  }}
-                  className="pipe"
-                >
-                  ✔
-                </span>
-              </div>
-              {this.state.orangeRuleBoxNumber !== null ? (
-                <p className="applied-yellow-box-symbol-number">
-                  {this.state.checkboxChecked[0]}{" "}
-                  {
-                    this.orangeRuleBoxSymbolsArray[
-                      this.state.orangeRuleBoxNumber - 1
-                    ]
-                  }
-                </p>
-              ) : (
-                this.orangeRuleBox(
-                  this.isRuleBoxClicked,
-                  this.state.isRuleBoxClicked
-                )
-              )}
-            </div>
-          </div>
-        );
-      } else if (this.state.textInputIterator2 === 2) {
-        //if both text fields are visible after stacking rule
-        inputField.push(
-          <div key={inputField.length + 1}>
-            {/*first input field line of stacking rule*/}
-            <div className="wrap">
-              <span>|</span>
-            </div>
-            <div className="wrap">
-              <span>{inputField.length + 1}.</span>
-              <input
-                id={inputField.length + 1}
-                onChange={this.inputText}
-                onClick={this.clickInput}
-                type="text"
-                placeholder="Enter a formula"
-                value={formulaArray[inputField.length]}
-              ></input>
-              <div
-                className="checkbox"
-                onClick={this.clickCheckbox}
-                id={inputField.length + 1}
-              >
-                <span
-                  id={inputField.length + 1}
-                  style={{
-                    display: `${
-                      checkPipeArray[inputField.length] ? "initial" : "none"
-                    }`,
-                  }}
-                  className="pipe"
-                >
-                  ✔
-                </span>
-              </div>
-              {this.state.orangeRuleBoxNumber !== null ? (
-                <p className="applied-yellow-box-symbol-number">
-                  {this.state.checkboxChecked[0]}{" "}
-                  {
-                    this.orangeRuleBoxSymbolsArray[
-                      this.state.orangeRuleBoxNumber - 1
-                    ]
-                  }
-                </p>
-              ) : (
-                this.orangeRuleBox(
-                  this.isRuleBoxClicked,
-                  this.state.isRuleBoxClicked
-                )
-              )}
-            </div>
-            <div className="wrap">
-              <span>{inputField.length + 2}.</span>
-              {/*second input field line of stacking rule*/}
-              <input
-                id={inputField.length + 2}
-                onChange={this.inputText}
-                onClick={this.clickInput}
-                type="text"
-                placeholder="Enter a formula"
-                value={formulaArray[inputField.length + 1]}
-              ></input>
-              <div
-                className="checkbox"
-                onClick={this.clickCheckbox}
-                id={inputField.length + 2}
-              >
-                <span
-                  id={inputField.length + 2}
-                  style={{
-                    display: `${
-                      checkPipeArray[inputField.length + 1] ? "initial" : "none"
-                    }`,
-                  }}
-                  className="pipe"
-                >
-                  ✔
-                </span>
-              </div>
-              {this.state.orangeRuleBoxNumber !== null ? (
-                <p className="applied-yellow-box-symbol-number">
-                  {this.state.checkboxChecked[0]}{" "}
-                  {
-                    this.orangeRuleBoxSymbolsArray[
-                      this.state.orangeRuleBoxNumber - 1
-                    ]
-                  }
-                </p>
-              ) : (
-                this.orangeRuleBox(
-                  this.isRuleBoxClicked2,
-                  this.state.isRuleBoxClicked2
-                )
-              )}
-            </div>
-          </div>
-        );
-      }
-    }
-
+    console.log(this.state)
+    console.log(this.singleInputChecker())
     return (
       <div className="App">
-        <h1>The Kirk Tool for Logic Trees</h1>
-        <div className="left">
-          <h2>Logical Operators</h2>
-          {this.logicalOperators}
-        </div>
-        <div className="middle">
-          {inputField}
-          <div
-            style={
-              this.state.textInputIterator2 === 2 ? { display: "none" } : null
-            }
-            onClick={this.clickPlusButton}
-            className="operator-btn"
-          >
-            +
+          <h1>The Kirk Tool for Logic Trees</h1>
+          <div className="left">
+              <h2>Logical Operators</h2>
+              <LogicalOperators 
+                  changeData={this.logicalOperatorButton}
+              />
           </div>
-        </div>
-        <div className="right">
-          <h2
-            style={{
-              color: this.isAnyCheckboxChecked("rgb(28, 184, 41)", "black"),
-            }}
-          >
-            Splitting Rule
-          </h2>
-          <div
-            style={{
-              border: `2px solid ${this.isAnyCheckboxChecked(
-                "rgb(28, 184, 41)",
-                "black"
-              )}`,
-            }}
-            id="1"
-            onClick={this.ruleBox}
-            className="rule-box rbone"
-          >
-            <div className="q one">/</div>
-            <div className="q two">\</div>
-            <div className="q three">
-              <div id="1" className="operator-btn"></div>
-            </div>
-            <div className="q four">
-              <div id="1" className="operator-btn"></div>
-            </div>
+          <div className="middle">
+              <FieldsTogether 
+                  stateData={this.state.inputField} 
+                  changeData={this.inputChanger}
+                  changeData2={this.inputChanger2}
+                  changeData3={this.inputChanger3}
+                  changeData4={this.inputChanger4}
+                  changeCheckbox={this.checkboxChanger}
+                  changeCheckbox2={this.checkboxChanger2}
+                  changeCheckbox3={this.checkboxChanger3}
+                  changeCheckbox4={this.checkboxChanger4}
+                  fieldNumberAndOrangeRuleItem={this.fieldNumberAndOrangeRuleItem}
+                  focus={this.focusFieldNumber}
+                  ruleOrder={this.state.ruleOrder}
+                  whichTextField={this.whichTextField}
+                  orangeRuleBox={this.orangeRuleBox}
+                  orangeRuleItem={this.orangeRuleItem}
+                  state={this.state}
+                  checkboxConfirmer={this.checkboxConfirmer}
+              />
+              <OperatorButton 
+                iterator={this.operatorButton}
+                visibility={this.state.plusButtonMain}
+                expandToggle={this.expanding}
+                ruleOrder={this.state.ruleOrder}
+              />
           </div>
-          <h2
-            style={{
-              color: this.isAnyCheckboxChecked("rgb(28, 184, 41)", "black"),
-            }}
-          >
-            Stacking Rule
-          </h2>
-          <div
-            style={{
-              border: `2px solid ${this.isAnyCheckboxChecked(
-                "rgb(28, 184, 41)",
-                "black"
-              )}`,
-            }}
-            id="2"
-            onClick={this.ruleBox}
-            className="rule-box rbtwo"
-          >
-            <div className="t one">|</div>
-            <div className="t two">
-              <div id="2" className="operator-btn"></div>
-            </div>
-            <div className="t three">
-              <div id="2" className="operator-btn"></div>
-            </div>
+          <div className="right">
+              <SplittingRule ruleId={this.orderRules} order={this.state.ruleOrder} plusBtn={this.state.plusButtonMain} stateData={this.state.inputField} />
+              <StackingRule ruleId={this.orderRules} order={this.state.ruleOrder} plusBtn={this.state.plusButtonMain} stateData={this.state.inputField} />
+              <BranchClosure ruleId={this.orderRules} />
           </div>
-          <h2
-            style={{
-              color: this.isAnyCheckboxChecked("rgb(28, 184, 41)", "black"),
-            }}
-          >
-            Branch Closure
-          </h2>
-          <div
-            style={{
-              border: `2px solid ${this.isAnyCheckboxChecked(
-                "rgb(28, 184, 41)",
-                "black"
-              )}`,
-            }}
-            id="3"
-            onClick={this.ruleBox}
-            className="rule-box rbthree"
-          >
-            <div className="t one">
-              <div id="3" className="operator-btn"></div>
-            </div>
-            <div className="t two">
-              <div id="3" className="operator-btn"></div>
-            </div>
-            <div className="t three">✕</div>
-          </div>
-        </div>
       </div>
     );
   }

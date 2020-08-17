@@ -1,5 +1,6 @@
 import React from 'react';
 import OrangeRuleBox from './assets/OrangeRuleBox';
+import BranchCloser from './assets/BranchCloser';
 
 export default function SplittingField( {
                 stateData, 
@@ -22,7 +23,7 @@ export default function SplittingField( {
                 orangeRuleBoxState2,
                 orangeRuleItem,
                 state,
-                sidingStyle
+                sidingStyle // has to be developed
                 } ) {
     const inputChange = (event) => {
         changeData(event.target.value, stateData.fieldNumber);
@@ -98,19 +99,25 @@ export default function SplittingField( {
         let style4 = {};
         if (stateData.checkbox1Confirmed) {
             style1 = {background: "none", border: "none", cursor: "initial", boxShadow: "initial"};
-        } else if (stateData.checkbox2Confirmed){
+        }
+        if (stateData.checkbox2Confirmed){
             style2 = {background: "none", border: "none", cursor: "initial", boxShadow: "initial"};
-        } else if (stateData.checkbox3Confirmed){
+        }
+        if (stateData.checkbox3Confirmed){
             style3 = {background: "none", border: "none", cursor: "initial", boxShadow: "initial"};
-        } else if (stateData.checkbox4Confirmed){
+        }
+        if (stateData.checkbox4Confirmed){
             style4 = {background: "none", border: "none", cursor: "initial", boxShadow: "initial"};
         }
 
+        console.log(multiRowCounter)
+
         return (
-            <div className="wrapping" style={sidingStyle()} >
+            <div className="wrapping" style={stateData.sidingStyle} >
+                <div>
                 <div className="wrap-splitting"><span>/</span><span>\</span></div>
                 <div className="wrap splitting" onMouseUp={() => focus(stateData.fieldNumber)} >
-                    <span>{multiRowCounter + number}.</span>
+                    <span>{stateData.expanded ?  multiRowCounter - 1 : multiRowCounter}.</span>
                     <input 
                         id="1"
                         type="text" 
@@ -138,8 +145,9 @@ export default function SplittingField( {
                         onClick={!stateData.checkbox2Confirmed ? () => checkboxClick2() : null}
                         style={style2}
                     ><span className="pipe" >{[pipe2, pipe2C]}</span></div>
-                    {state.inputField[number - 1].fieldNumberAndOrangeRuleItem === "" ?
+                    {state.inputField[number - 1].fieldNumberAndOrangeRuleItem === "" && stateData.sidingStyle.gridColumnStart !== "unset"  ?
                         <OrangeRuleBox 
+                            sidingStyle={sidingStyle}
                             orangeRuleBox={() => orangeRuleBox(1)} 
                             orangeRuleBoxState={orangeRuleBoxState} 
                             orangeRuleItem={orangeRuleItem}
@@ -148,13 +156,18 @@ export default function SplittingField( {
                             checkboxConfirmer={checkboxConfirmer}
                             fieldNumberAndOrangeRuleItem={fieldNumberAndOrangeRuleItem}
                         /> :
-                        <div className="rule-result">{state.inputField[number - 1].fieldNumberAndOrangeRuleItem}</div>
+                            stateData.sidingStyle.gridColumnStart !== "unset" ?
+                        <div className="rule-result">{state.inputField[number - 1].fieldNumberAndOrangeRuleItem}</div> : null
                     }
+                </div>
+                <div className="branchcloser" ><BranchCloser checkBox={stateData.whichCheckbox} rowNumber={stateData.rowNumbers} />
+                                               <BranchCloser checkBox={stateData.whichCheckbox} rowNumber={stateData.rowNumbers} /></div>
                 </div>
 
                 {stateData.expanded ?
+                    <div>
                     <div className="wrap splitting" onMouseUp={() => focus(stateData.fieldNumber)} >
-                        <span>{multiRowCounter + number + 1}.</span>
+                        <span>{multiRowCounter}.</span>
                         <input 
                             id="3"
                             type="text" 
@@ -184,6 +197,7 @@ export default function SplittingField( {
                         ><span className="pipe" >{[pipe4, pipe4C]}</span></div>
                         {state.inputField[number - 1].fieldNumberAndOrangeRuleItem === "" ?
                         <OrangeRuleBox 
+                            sidingStyle={sidingStyle}
                             orangeRuleBox={() => orangeRuleBox(2)} 
                             orangeRuleBoxState2={orangeRuleBoxState2} 
                             orangeRuleItem={orangeRuleItem}
@@ -194,6 +208,9 @@ export default function SplittingField( {
                         /> :
                         <div className="rule-result">{state.inputField[number - 1].fieldNumberAndOrangeRuleItem}</div>
                     }
+                    </div>
+                    <div className="branchcloser" ><BranchCloser checkBox={stateData.whichCheckbox} rowNumber={stateData.rowNumbers} />
+                                                   <BranchCloser checkBox={stateData.whichCheckbox} rowNumber={stateData.rowNumbers} /></div>
                     </div>
                     :
                     null

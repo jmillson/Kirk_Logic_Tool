@@ -2,7 +2,9 @@ import React from 'react'
 
 import InputField from './InputField';
 import SplittingField from './SplittingField';
+import SplittingField2 from './SplittingField2';
 import StackingField from './StackingField';
+import StackingField2 from './StackingField2';
 
 export default function FieldsTogether( {
         stateData, 
@@ -20,7 +22,8 @@ export default function FieldsTogether( {
         whichTextField,
         orangeRuleBox,
         orangeRuleItem,
-        state
+        state,
+        sidingStyle
         } ) {
 
            /* const permanentPipeStyle = () => {
@@ -30,80 +33,231 @@ export default function FieldsTogether( {
                 }
                 return style;
             }*/
-            let splittingCounter = 0;
-            const side = [];
 
     const field = [];
     let multiRowCounter = 0;
     stateData.map((type, i) => {
-        //////////////////// THIS IS FOR PLACING NEW INPUT ELEMENT ON THE LEFT OR ON THE RIGHT AFTER SPLITTING APPLIED
-            if (type.type === "splitting") {
-                splittingCounter++;
-                if (type.checkbox1 || type.checkbox1Confirmed || type.checkbox3 || type.checkbox3Confirmed) {
-                    side.push("left");
-                } else if (type.checkbox2 || type.checkbox2Confirmed || type.checkbox4 || type.checkbox4Confirmed) {
-                    side.push("right");
-                }
-            }
-            console.log(splittingCounter, side);
-            const sidingStyle = () => {
-                if (splittingCounter === 1 && side[splittingCounter-1] === "left") {
-                    return {gridColumnStart: "1", gridColumnEnd: "3"}
-                } else if (splittingCounter === 1 && side[splittingCounter-1] === "right") {
-                    return {gridColumnStart: "3", gridColumnEnd: "5"}
-                } else return {gridColumnStart: "1", gridColumnEnd: "5"}
-            }
-            ///////////////////////////// END OF IT
 
+            if (type.fieldNumber > 0) {
+                multiRowCounter++;
+            }
             if (type.expanded) {
                 multiRowCounter++;
             }
+
             if (type.type === "splitting") {
-                field.push(<SplittingField 
-                    key={i} 
-                    number={type.fieldNumber} 
-                    stateData={type} 
-                    changeData={changeData}
-                    changeData2={changeData2}
-                    changeData3={changeData3}
-                    changeData4={changeData4}
-                    changeCheckbox={changeCheckbox}
-                    changeCheckbox2={changeCheckbox2}
-                    changeCheckbox3={changeCheckbox3}
-                    changeCheckbox4={changeCheckbox4}
-                    fieldNumberAndOrangeRuleItem={fieldNumberAndOrangeRuleItem}
-                    checkboxConfirmer={checkboxConfirmer}
-                    focus={focus}
-                    whichTextField={whichTextField}
-                    multiRowCounter={multiRowCounter}
-                    orangeRuleBox={orangeRuleBox}
-                    orangeRuleBoxState={type.orangeRuleBox} 
-                    orangeRuleBoxState2={type.orangeRuleBox2} 
-                    orangeRuleItem={orangeRuleItem}
-                    state={state}
-                    sidingStyle={sidingStyle}
-                    />);
+                console.log(type.sidingStyle)
+                if (type.sidingStyle.gridColumnStart === undefined && type.sidingStyle.gridColumn === undefined) {
+                    field.push(<SplittingField 
+                        key={i} 
+                        number={type.fieldNumber} 
+                        stateData={type} 
+                        changeData={changeData}
+                        changeData2={changeData2}
+                        changeData3={changeData3}
+                        changeData4={changeData4}
+                        changeCheckbox={changeCheckbox}
+                        changeCheckbox2={changeCheckbox2}
+                        changeCheckbox3={changeCheckbox3}
+                        changeCheckbox4={changeCheckbox4}
+                        fieldNumberAndOrangeRuleItem={fieldNumberAndOrangeRuleItem}
+                        checkboxConfirmer={checkboxConfirmer}
+                        focus={focus}
+                        whichTextField={whichTextField}
+                        multiRowCounter={multiRowCounter}
+                        orangeRuleBox={orangeRuleBox}
+                        orangeRuleBoxState={type.orangeRuleBox} 
+                        orangeRuleBoxState2={type.orangeRuleBox2} 
+                        orangeRuleItem={orangeRuleItem}
+                        state={state}
+                        sidingStyle={sidingStyle}
+                        />);
+                } else if (type.sidingStyle.gridColumn !== undefined && type.sidingStyle.gridColumn.search("span 1") <= 0) {  
+                    console.log('SIKERULT', type.sidingStyle.gridColumn.search("span 1"))                                                
+                    field.push(
+                        <div key={i} style={{display: "grid", gridRowStart: `${i + 1}`}} >
+                            <div style={{display: "grid", gridColumn: "1"}}>
+                                <SplittingField 
+                                    number={type.fieldNumber}
+                                    stateData={type} 
+                                    changeData={changeData}
+                                    changeData2={changeData2}
+                                    changeData3={changeData3}
+                                    changeData4={changeData4}
+                                    changeCheckbox={changeCheckbox}
+                                    changeCheckbox2={changeCheckbox2}
+                                    changeCheckbox3={changeCheckbox3}
+                                    changeCheckbox4={changeCheckbox4}
+                                    fieldNumberAndOrangeRuleItem={fieldNumberAndOrangeRuleItem}
+                                    checkboxConfirmer={checkboxConfirmer}
+                                    focus={focus}
+                                    whichTextField={whichTextField}
+                                    multiRowCounter={multiRowCounter}
+                                    orangeRuleBox={orangeRuleBox}
+                                    orangeRuleBoxState={type.orangeRuleBox} 
+                                    orangeRuleBoxState2={type.orangeRuleBox2} 
+                                    orangeRuleItem={orangeRuleItem}
+                                    state={state}
+                                    sidingStyle={sidingStyle}
+                                />
+                            </div>
+                            <div style={{display: "grid", gridColumn: "2"}}>
+                                <SplittingField2 
+                                    number={type.fieldNumber}
+                                    stateData={type} 
+                                    changeData={changeData}
+                                    changeData2={changeData2}
+                                    changeData3={changeData3}
+                                    changeData4={changeData4}
+                                    changeCheckbox={changeCheckbox}
+                                    changeCheckbox2={changeCheckbox2}
+                                    changeCheckbox3={changeCheckbox3}
+                                    changeCheckbox4={changeCheckbox4}
+                                    fieldNumberAndOrangeRuleItem={fieldNumberAndOrangeRuleItem}
+                                    checkboxConfirmer={checkboxConfirmer}
+                                    focus={focus}
+                                    whichTextField={whichTextField}
+                                    multiRowCounter={multiRowCounter}
+                                    orangeRuleBox={orangeRuleBox}
+                                    orangeRuleBoxState={type.orangeRuleBox} 
+                                    orangeRuleBoxState2={type.orangeRuleBox2} 
+                                    orangeRuleItem={orangeRuleItem}
+                                    state={state}
+                                    sidingStyle={sidingStyle}
+                                />
+                            </div>
+                        </div>)
+                } else {          
+                    console.log('ELSE')                                                 
+                    field.push(
+                        <div key={i} style={{gridRowStart: `${i + 1}`, display: "grid", gridColumnStart: `${type.sidingStyle.gridColumnStart === "3" ? "3" : "1"}`, gridColumnEnd: `${type.sidingStyle.gridColumnEnd === "3" ? "3" : "5"}`}} >
+                            <div style={type.sidingStyle.gridColumnStart === "3" ? {display: "none"} : {gridColumnStart: "1", gridColumnEnd: "3"}}>
+                                <SplittingField 
+                                    number={type.fieldNumber}
+                                    stateData={type} 
+                                    changeData={changeData}
+                                    changeData2={changeData2}
+                                    changeData3={changeData3}
+                                    changeData4={changeData4}
+                                    changeCheckbox={changeCheckbox}
+                                    changeCheckbox2={changeCheckbox2}
+                                    changeCheckbox3={changeCheckbox3}
+                                    changeCheckbox4={changeCheckbox4}
+                                    fieldNumberAndOrangeRuleItem={fieldNumberAndOrangeRuleItem}
+                                    checkboxConfirmer={checkboxConfirmer}
+                                    focus={focus}
+                                    whichTextField={whichTextField}
+                                    multiRowCounter={multiRowCounter}
+                                    orangeRuleBox={orangeRuleBox}
+                                    orangeRuleBoxState={type.orangeRuleBox} 
+                                    orangeRuleBoxState2={type.orangeRuleBox2} 
+                                    orangeRuleItem={orangeRuleItem}
+                                    state={state}
+                                    sidingStyle={sidingStyle}
+                                />
+                            </div>
+                            <div style={type.sidingStyle.gridColumnStart === "1" ? {display: "none"} : {gridColumnStart: "3", gridColumnEnd: "5"}}>
+                                <SplittingField2 
+                                    number={type.fieldNumber}
+                                    stateData={type} 
+                                    changeData={changeData}
+                                    changeData2={changeData2}
+                                    changeData3={changeData3}
+                                    changeData4={changeData4}
+                                    changeCheckbox={changeCheckbox}
+                                    changeCheckbox2={changeCheckbox2}
+                                    changeCheckbox3={changeCheckbox3}
+                                    changeCheckbox4={changeCheckbox4}
+                                    fieldNumberAndOrangeRuleItem={fieldNumberAndOrangeRuleItem}
+                                    checkboxConfirmer={checkboxConfirmer}
+                                    focus={focus}
+                                    whichTextField={whichTextField}
+                                    multiRowCounter={multiRowCounter}
+                                    orangeRuleBox={orangeRuleBox}
+                                    orangeRuleBoxState={type.orangeRuleBox} 
+                                    orangeRuleBoxState2={type.orangeRuleBox2} 
+                                    orangeRuleItem={orangeRuleItem}
+                                    state={state}
+                                    sidingStyle={sidingStyle}
+                                />
+                            </div>
+                        </div>)
+                }
             } else if (type.type === "stacking") {
-                field.push(<StackingField 
-                    key={i} 
-                    number={type.fieldNumber} 
-                    stateData={type} 
-                    changeData={changeData}
-                    changeData2={changeData2}
-                    changeCheckbox={changeCheckbox}
-                    changeCheckbox2={changeCheckbox2}
-                    fieldNumberAndOrangeRuleItem={fieldNumberAndOrangeRuleItem}
-                    checkboxConfirmer={checkboxConfirmer}
-                    focus={focus}
-                    whichTextField={whichTextField}
-                    multiRowCounter={multiRowCounter}
-                    orangeRuleBox={orangeRuleBox}
-                    orangeRuleBoxState={type.orangeRuleBox} 
-                    orangeRuleBoxState2={type.orangeRuleBox2} 
-                    orangeRuleItem={orangeRuleItem}
-                    state={state}
-                    sidingStyle={sidingStyle}
-                    />);
+                if (type.sidingStyle.gridColumnStart === undefined) {
+                    field.push(
+                        <StackingField 
+                            key={i} 
+                            number={type.fieldNumber} 
+                            stateData={type} 
+                            changeData={changeData}
+                            changeData2={changeData2}
+                            changeCheckbox={changeCheckbox}
+                            changeCheckbox2={changeCheckbox2}
+                            fieldNumberAndOrangeRuleItem={fieldNumberAndOrangeRuleItem}
+                            checkboxConfirmer={checkboxConfirmer}
+                            focus={focus}
+                            whichTextField={whichTextField}
+                            multiRowCounter={multiRowCounter}
+                            orangeRuleBox={orangeRuleBox}
+                            orangeRuleBoxState={type.orangeRuleBox} 
+                            orangeRuleBoxState2={type.orangeRuleBox2} 
+                            orangeRuleItem={orangeRuleItem}
+                            state={state}
+                            sidingStyle={sidingStyle}
+                        />
+                    );
+                } else {
+                    field.push(
+                        <div key={i} style={{gridRowStart: `${i + 1}`, display: "grid", gridColumnStart: `${type.sidingStyle.gridColumnStart === "3" ? "3" : "1"}`, gridColumnEnd: `${type.sidingStyle.gridColumnEnd === "3" ? "3" : "5"}`}}>
+                            <div style={type.sidingStyle.gridColumnStart === "3" ? {display: "none"} : {gridColumnStart: "1", gridColumnEnd: "3"}}>
+                                <StackingField 
+                                    key={i} 
+                                    number={type.fieldNumber} 
+                                    stateData={type} 
+                                    changeData={changeData}
+                                    changeData2={changeData2}
+                                    changeCheckbox={changeCheckbox}
+                                    changeCheckbox2={changeCheckbox2}
+                                    fieldNumberAndOrangeRuleItem={fieldNumberAndOrangeRuleItem}
+                                    checkboxConfirmer={checkboxConfirmer}
+                                    focus={focus}
+                                    whichTextField={whichTextField}
+                                    multiRowCounter={multiRowCounter}
+                                    orangeRuleBox={orangeRuleBox}
+                                    orangeRuleBoxState={type.orangeRuleBox} 
+                                    orangeRuleBoxState2={type.orangeRuleBox2} 
+                                    orangeRuleItem={orangeRuleItem}
+                                    state={state}
+                                    sidingStyle={sidingStyle}
+                            />
+                            </div>
+                            <div style={type.sidingStyle.gridColumnStart === "1" ? {display: "none"} : {gridRowStart: `${i + 1}`, gridColumnStart: "3", gridColumnEnd: "5"}}>
+                                <StackingField2 
+                                    key={i} 
+                                    number={type.fieldNumber} 
+                                    stateData={type} 
+                                    changeData={changeData}
+                                    changeData2={changeData2}
+                                    changeCheckbox={changeCheckbox}
+                                    changeCheckbox2={changeCheckbox2}
+                                    fieldNumberAndOrangeRuleItem={fieldNumberAndOrangeRuleItem}
+                                    checkboxConfirmer={checkboxConfirmer}
+                                    focus={focus}
+                                    whichTextField={whichTextField}
+                                    multiRowCounter={multiRowCounter}
+                                    orangeRuleBox={orangeRuleBox}
+                                    orangeRuleBoxState={type.orangeRuleBox} 
+                                    orangeRuleBoxState2={type.orangeRuleBox2} 
+                                    orangeRuleItem={orangeRuleItem}
+                                    state={state}
+                                    sidingStyle={sidingStyle}
+                                />
+                            </div>
+                        </div>
+                    );
+                }
+                
             } else if (type.type === "single") {
                 field.push(<InputField 
                     key={i} 
@@ -115,6 +269,7 @@ export default function FieldsTogether( {
                     focus={focus}
                     whichTextField={whichTextField}
                     state={state}
+                    multiRowCounter={multiRowCounter}
                 />);
             };
             return field;

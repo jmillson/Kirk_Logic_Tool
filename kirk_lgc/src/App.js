@@ -16,6 +16,7 @@ class App extends React.Component {
       ruleOrder: [],                    // makes an array of 1 and 2's. 1: splitting 2: stacking
       plusButtonMain: true,             // makes the plus button work if it's true
       expandArray: [],           
+      branchClosure: false,
       inputField: [                     // object of all the necessary data to one line
         {
           focusInput1: false,           // true if input field is clicked
@@ -24,10 +25,30 @@ class App extends React.Component {
           checkbox1: false,             // if checkbox checked it's true
           checkbox1Confirmed: false,
           orangeRuleItem: "",
+          rowNumbers: [],
           type: "single"                // input line: single / splitting / stacking
         }
       ]
     }
+  }
+
+  branchClosure = () => {
+    this.setState({branchClosure: !this.state.branchClosure})
+    const rowNumbers = [];
+    this.state.inputField.map((currentRow) => {
+        if (currentRow.checkbox1 || currentRow.checkbox2 || currentRow.checkbox3 || currentRow.checkbox4) {
+            rowNumbers.push(currentRow.fieldNumber)
+        }
+        console.log(rowNumbers)
+        return rowNumbers;
+    })
+    let whichCheckbox = null;
+    this.state.inputField.map((currentRow) => currentRow.checkbox1 ? whichCheckbox = 1 : currentRow.checkbox2 ? whichCheckbox = 2 : currentRow.checkbox3 ? whichCheckbox = 3 : currentRow.checkbox4 ? whichCheckbox = 4 : whichCheckbox = null);
+    console.log(whichCheckbox)
+    let newArray = [...this.state.inputField];
+    newArray[rowNumbers[0]-1] = {...newArray[rowNumbers[0] - 1], checkbox1: false, checkbox2: false, checkbox3: false, checkbox4: false};
+    newArray[rowNumbers[1]-1] = {...newArray[rowNumbers[1] - 1], rowNumbers: [...newArray[rowNumbers[1] - 1].rowNumbers, ...rowNumbers], whichCheckbox: whichCheckbox, checkbox1: false, checkbox2: false, checkbox3: false, checkbox4: false};
+    this.setState({branchClosure: false, inputField: newArray});
   }
 
   orderRules = (id) => {
@@ -53,6 +74,7 @@ class App extends React.Component {
           checkbox1: false,                                                       // ...and adds to inputField object in state
           checkbox1Confirmed: false,
           orangeRuleItem: "",
+          rowNumbers: [],
           type: "single"
         }
       ]})
@@ -83,6 +105,9 @@ class App extends React.Component {
           orangeRuleBox: false,
           orangeRuleBox2: false,
           orangeRuleItem: "",
+          sidingStyle: {},
+          rowNumbers: [],
+          whichCheckbox: null,
           type: "splitting"                                                       // this is an {object} of a splitting line
         }
       ]})
@@ -104,40 +129,127 @@ class App extends React.Component {
           orangeRuleBox: false,
           orangeRuleBox2: false,
           orangeRuleItem: "",
+          sidingStyle: {},
+          rowNumbers: [],
+          whichCheckbox: null,
           type: "stacking"
         }
       ]})
       this.setState({plusButtonMain: false});                                     // '+' button turnes off each time in order to prevebt unnecessary actions
     }
   }
-
-  fieldNumberAndOrangeRuleItem = (fieldNum, orangeRuIt) => {
+///////////////////////////////////
+  sidingStyle = () => {
     const fieldIndex = this.state.focusField - 1;
+    const prevField = this.state.inputField.length - 1;
+    const prevPrevField = this.state.inputField.length - 2;
     let newArray = [...this.state.inputField];
-    newArray[fieldIndex] = {...newArray[fieldIndex], fieldNumberAndOrangeRuleItem: fieldNum + orangeRuIt};
+    this.state.inputField.map((field, i) => {
+      //let style = {};
+      if ((field.checkbox1 || field.checkbox2 || field.checkbox3 || field.checkbox4) && newArray[prevPrevField].type !== "single") {
+        newArray[prevField] = {...newArray[prevField], sidingStyle: {display: "grid", gridColumnStart: "unset", gridColumnEnd: "unset"}};
+        /*if (field.type === "single") {newArray[fieldIndex] = {...newArray[fieldIndex], checkbox1: false};}
+        /*else if (field.type === "stacking") {newArray[fieldIndex] = {...newArray[fieldIndex], checkbox1: false, checkbox2: false};}*/
+        console.log('INPUT FIELD ON BOTH SIDES');
+      }
+      if (field.type !== "single" && field.sidingStyle.gridColumnStart === undefined && field.sidingStyle.gridColumn === undefined /*&& field.fieldNumber === this.state.inputField.length - 1*/ && (field.checkbox1 || field.checkbox3)) {
+        newArray[prevField] = {...newArray[prevField], sidingStyle: {gridColumnStart: "1", gridColumnEnd: "3"}};
+        newArray[fieldIndex] = {...newArray[fieldIndex]/*, checkbox1: false, checkbox3: false*/};
+        console.log('INPUT FIELD ON LEFT SIDE');
+      } 
+      if (field.type !== "single" && field.sidingStyle.gridColumnStart === undefined && field.sidingStyle.gridColumn === undefined /*&& field.fieldNumber === this.state.inputField.length - 1*/ && (field.checkbox2 || field.checkbox4)) {
+        newArray[prevField] = {...newArray[prevField], sidingStyle: {gridColumnStart: "3", gridColumnEnd: "5"}};
+        newArray[fieldIndex] = {...newArray[fieldIndex]/*, checkbox2: false, checkbox4: false*/};
+        console.log('INPUT FIELD ON RIGHT SIDE');
+      } 
+      if (field.type !== "single" &&
+              ((field.sidingStyle.gridColumnStart === "1" && 
+              field.sidingStyle.gridColumnEnd === "3") || 
+              field.sidingStyle.gridColumn !== undefined) && 
+              (field.checkbox1 || field.checkbox3)) {
+        newArray[prevField] = {...newArray[prevField], sidingStyle: {gridColumn: "1 / span 1"}};
+        console.log('INPUT FIELD ON LEFT OF LEFT SIDE');
+      }
+      if (field.type !== "single" && 
+              ((field.sidingStyle.gridColumnStart === "1" && 
+              field.sidingStyle.gridColumnEnd === "3") || 
+              field.sidingStyle.gridColumn !== undefined) && 
+              (field.checkbox2 || field.checkbox4)) {
+        newArray[prevField] = {...newArray[prevField], sidingStyle: {gridColumn: "2 / span 1"}};
+        console.log('INPUT FIELD ON RIGHT OF LEFT SIDE');
+      }
+      if (field.type !== "single" &&
+              ((field.sidingStyle.gridColumnStart === "3" && 
+              field.sidingStyle.gridColumnEnd === "5") || 
+              field.sidingStyle.gridColumn !== undefined) && 
+              (field.checkbox1 || field.checkbox3)) {
+        newArray[prevField] = {...newArray[prevField], sidingStyle: {gridColumn: "3 / span 1"}};
+        console.log('INPUT FIELD ON LEFT OF RIGHT SIDE');
+      }
+      if (field.type !== "single" && 
+              ((field.sidingStyle.gridColumnStart === "3" && 
+              field.sidingStyle.gridColumnEnd === "5") || 
+              field.sidingStyle.gridColumn !== undefined) && 
+              (field.checkbox2 || field.checkbox4)) {
+        newArray[prevField] = {...newArray[prevField], sidingStyle: {gridColumn: "4 / span 1"}};
+        console.log('INPUT FIELD ON RIGHT OF RIGHT SIDE');
+      }
+                                                if (field.type !== "single" &&
+                                                        ((field.sidingStyle.gridColumnStart === "1" && 
+                                                        field.sidingStyle.gridColumnEnd === "5") ||
+                                                        field.sidingStyle.gridColumnStart === undefined) && 
+                                                        field.fieldNumber < this.state.inputField.length - 1 &&
+                                                        (field.checkbox1 || field.checkbox3) &&
+                                                        (field.checkbox1Confirmed || field.checkbox3Confirmed)) {
+                                                          /*if (field[field.length-1].sidingStyle.gridColumnEnd === "3") {
+                                                            newArray[prevField] = {...newArray[prevField], sidingStyle: {gridColumn: "1 / span 2"}};
+                                                          }*/
+                                                  newArray[prevField] = {...newArray[prevField], sidingStyle: {gridRowStart: `${this.state.inputField.length}`, gridColumn: "1 / span 2"}};
+                                                  console.log('INPUT FIELD ON LEFT SPAN 2');
+                                                }
+                                                if (field.type !== "single" &&
+                                                        ((field.sidingStyle.gridColumnStart === "1" && 
+                                                        field.sidingStyle.gridColumnEnd === "5") ||
+                                                        field.sidingStyle.gridColumnStart === undefined) &&  
+                                                        field.fieldNumber < this.state.inputField.length - 1 &&
+                                                        (field.checkbox2 || field.checkbox4) &&
+                                                        (field.checkbox2Confirmed || field.checkbox4Confirmed)) {
+                                                  newArray[prevField] = {...newArray[prevField], sidingStyle: {gridRowStart: `${this.state.inputField.length}`, gridColumn: "3 / span 2"}};
+                                                  console.log('INPUT FIELD ON RIGHT SPAN 2');
+                                                }
+      /*if (field.type === "splitting" && (field.checkbox1 || field.checkbox2 || field.checkbox3 || field.checkbox4)) {
+        newArray[fieldIndex] = {...newArray[fieldIndex], checkbox1: false, checkbox2: false, checkbox3: false, checkbox4: false};
+      }*/
+      return newArray;
+    })
     this.setState({inputField: newArray});
   }
-
-  checkboxConfirmer = (fieldNum, chckbxCnfrmd) => {
+//////////////////////////////////
+  fieldNumberAndOrangeRuleItem = (fieldNum, orangeRuIt, chckbxCnfrmd) => {
+    const fieldIndex = this.state.focusField - 1;
     let newArray = [...this.state.inputField];
+    newArray[fieldNum].checkbox1 || newArray[fieldNum].checkbox2 ?
+      newArray[fieldIndex] = {...newArray[fieldIndex], fieldNumberAndOrangeRuleItem: fieldNum + 1 + orangeRuIt} :
+      newArray[fieldIndex] = {...newArray[fieldIndex], fieldNumberAndOrangeRuleItem: fieldNum + 2 + orangeRuIt};
+    this.setState({inputField: newArray});
     const lastState = this.state.inputField[this.state.inputField.length-1].orangeRuleBox;
     const lastState2 = this.state.inputField[this.state.inputField.length-1].orangeRuleBox2;
     if (chckbxCnfrmd === 1 && (lastState || lastState2)) {
-      newArray[fieldNum] = {...newArray[fieldNum], checkbox1: false, checkbox1Confirmed: true};
-      this.setState({inputField: newArray});
-    }
-    if (chckbxCnfrmd === 2 && (lastState || lastState2)) {
-      newArray[fieldNum] = {...newArray[fieldNum], checkbox2: false, checkbox2Confirmed: true};
-      this.setState({inputField: newArray});
-    }
-    if (chckbxCnfrmd === 3 && (lastState || lastState2)) {
-      newArray[fieldNum] = {...newArray[fieldNum], checkbox3: false, checkbox3Confirmed: true};
-      this.setState({inputField: newArray});
-    }
-    if (chckbxCnfrmd === 4 && (lastState || lastState2)) {
-      newArray[fieldNum] = {...newArray[fieldNum], checkbox4: false, checkbox4Confirmed: true};
-      this.setState({inputField: newArray});
-    }
+        newArray[fieldNum] = {...newArray[fieldNum], checkbox1: false, checkbox1Confirmed: true};
+        this.setState({inputField: newArray});
+      }
+      if (chckbxCnfrmd === 2 && (lastState || lastState2)) {
+        newArray[fieldNum] = {...newArray[fieldNum], checkbox2: false, checkbox2Confirmed: true};
+        this.setState({inputField: newArray});
+      }
+      if (chckbxCnfrmd === 3 && (lastState || lastState2)) {
+        newArray[fieldNum] = {...newArray[fieldNum], checkbox3: false, checkbox3Confirmed: true};
+        this.setState({inputField: newArray});
+      }
+      if (chckbxCnfrmd === 4 && (lastState || lastState2)) {
+        newArray[fieldNum] = {...newArray[fieldNum], checkbox4: false, checkbox4Confirmed: true};
+        this.setState({inputField: newArray});
+      }
   }
 
   orangeRuleBox = (x) => {
@@ -332,6 +444,7 @@ class App extends React.Component {
                   orangeRuleItem={this.orangeRuleItem}
                   state={this.state}
                   checkboxConfirmer={this.checkboxConfirmer}
+                  sidingStyle={this.sidingStyle}
               />
               <OperatorButton 
                 iterator={this.operatorButton}
@@ -343,7 +456,7 @@ class App extends React.Component {
           <div className="right">
               <SplittingRule ruleId={this.orderRules} order={this.state.ruleOrder} plusBtn={this.state.plusButtonMain} stateData={this.state.inputField} />
               <StackingRule ruleId={this.orderRules} order={this.state.ruleOrder} plusBtn={this.state.plusButtonMain} stateData={this.state.inputField} />
-              <BranchClosure ruleId={this.orderRules} />
+              <BranchClosure branchClosure={this.branchClosure} state={this.state} />
           </div>
       </div>
     );

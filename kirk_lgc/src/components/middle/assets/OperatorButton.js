@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function OperatorButton( {iterator, visibility, expandToggle, ruleOrder} ) {
+export default function OperatorButton( {iterator, visibility, expandToggle, ruleOrder, sidingStyle} ) {
     function runClick() {
         if (visibility) {
             iterator();
@@ -13,7 +13,8 @@ export default function OperatorButton( {iterator, visibility, expandToggle, rul
         <div 
             //style={visibility ? {} : {display: "none"}}
             className="operator-btn" 
-            onClick={runClick}
+            onMouseDown={runClick}
+            onClick={sidingStyle}
         >+</div>
     )
 }

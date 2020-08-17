@@ -8,6 +8,7 @@ export default function OrangeRuleBox( {
     checkboxConfirmer,
     fieldNumberAndOrangeRuleItem,
     state,
+    sidingStyle,
     number // gives back the number of which line the rule is being applied// number of the orange rule applied -1 has to added
 } ) {
     const orangeRuleBoxSymbolsArray= ["∧", "¬∨", "∨", "¬∧", "→", "¬→", "↔", "¬↔", "¬¬", "∀", "∃", ""]; //array of all symbols in dropdown menu of the orange rule box
@@ -55,10 +56,10 @@ export default function OrangeRuleBox( {
 
     return (
         <div>
-            <div className="rule" /*style={symbolFromState !== "" ? {display: "none"} : {}}*/ onClick={orangeRuleBox} >RULE▾</div>
+            <div className="rule" /*style={symbolFromState !== "" ? {display: "none"} : {}}*/ onClick={orangeRuleBox} onMouseDown={sidingStyle} >RULE▾</div>
             <div className="rule-items" style={orangeRuleBoxState || orangeRuleBoxState2 ? /*symbolFromState !== "" ? {display: "initial"} :*/ {display: "grid"} : {display: "none"}} >
                     {orangeRuleBoxSymbolsArray.map((symbol, index) => {//generates the symbol buttons according to the orangeRuleBoxSymbolsArray
-                        return <p key={index} onClick={() => fieldNumberAndOrangeRuleItem(num, symbol)} onMouseDown={() => checkboxConfirmer(numm - 1, whichCheckbox)} >{symbol}</p>;
+                        return <p key={index} onClick={() => fieldNumberAndOrangeRuleItem(numm-1, symbol, whichCheckbox)} >{symbol}</p>;
                     })} 
             </div>
         </div>

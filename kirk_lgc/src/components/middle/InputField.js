@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function InputField( {number, stateData, changeData, changeCheckbox, focus, whichTextField, state} ) {
+export default function InputField( {number, stateData, changeData, changeCheckbox, focus, whichTextField, state, multiRowCounter} ) {
 
         const inputChange = (event) => {
             changeData(event.target.value, stateData.fieldNumber);
@@ -52,7 +52,7 @@ export default function InputField( {number, stateData, changeData, changeCheckb
 
         return (
             <div className="wrap" onMouseUp={() => focus(stateData.fieldNumber)} >
-                <span>{number}.</span>
+                <span>{multiRowCounter}.</span>
                 <input 
                     id="1"
                     type="text" 

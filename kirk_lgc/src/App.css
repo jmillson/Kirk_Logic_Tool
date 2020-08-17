@@ -48,6 +48,7 @@ h2 {
     grid-row-end: 10;
     grid-column-start: 1;
     grid-column-end: 1;
+    width: 160px;
     padding: 10px;
     display: grid;
     display: -moz-grid;
@@ -77,6 +78,7 @@ h2 {
     grid-row-end: 10;
     grid-column-start: 3;
     grid-column-end: 3;
+    width: 300px;
     justify-content: center;
     padding: 10px;
     display: grid;
@@ -379,10 +381,10 @@ input[type=text]:hover {
     font-size: 2rem;
 }
 
-.middle .splitting,
+/*.middle .splitting,
 .middle .stacking {
     margin-left: 80px;
-}
+}*/
 
 .flash {
     animation: flash 1s;
@@ -496,4 +498,11 @@ input[type=text]:hover {
         100% {
             background: white;
         }
+    }
+
+    .branchcloser {
+        display: flex;
+        justify-content: space-evenly;
+        font-size: 1.8rem;
+        /*margin-bottom: -70px;*/
     }

@@ -2,7 +2,7 @@ import React from 'react';
 import OrangeRuleBox from './assets/OrangeRuleBox';
 import BranchCloser from './assets/BranchCloser';
 
-export default function StackingField( {
+export default function StackingField2( {
             number, 
             stateData, 
             changeData, 
@@ -21,25 +21,25 @@ export default function StackingField( {
             state,
             sidingStyle // has to be developed
             } ) {
-    const inputChange = (event) => {
+        const inputChange = (event) => {
         changeData(event.target.value, stateData.fieldNumber);
-    }
-    const inputChange2 = (event) => {
+        }
+        const inputChange2 = (event) => {
         changeData2(event.target.value, stateData.fieldNumber);
-    }
-    const checkboxClick = () => {
+        }
+        const checkboxClick = () => {
         return changeCheckbox(stateData.fieldNumber);
-    }
-    const checkboxClick2 = () => {
+        }
+        const checkboxClick2 = () => {
         return changeCheckbox2(stateData.fieldNumber);
-    }
-    const focusingLine = (event) => {
+        }
+        const focusingLine = (event) => {
         whichTextField(event.target.id);
-    }
-    const pipe1 = stateData.checkbox1 ? "✔" : "";
-    const pipe2 = stateData.checkbox2 ? "✔" : "";
-    const pipe1C = stateData.checkbox1Confirmed ? "✔" : "";
-    const pipe2C = stateData.checkbox2Confirmed ? "✔" : "";
+        }
+        const pipe1 = stateData.checkbox1 ? "✔" : "";
+        const pipe2 = stateData.checkbox2 ? "✔" : "";
+        const pipe1C = stateData.checkbox1Confirmed ? "✔" : "";
+        const pipe2C = stateData.checkbox2Confirmed ? "✔" : "";
 
         let style1 = {};
         let style2 = {};
@@ -55,7 +55,40 @@ export default function StackingField( {
                 <div>
                 <div className="wrap-splitting" ><span>|</span></div>
                 <div className="wrap stacking" onMouseUp={() => focus(stateData.fieldNumber)} >
-                    <span>{stateData.expanded ?  multiRowCounter - 1 : multiRowCounter}.</span>
+                    {stateData.sidingStyle.gridColumnStart !== "unset" ? <span>{stateData.expanded ?  multiRowCounter - 1 : multiRowCounter}.</span> : null}
+                    <input 
+                        id="1"
+                        type="text" 
+                        placeholder="Enter a formula" 
+                        value={stateData.fieldText2}
+                        onChange={inputChange2}
+                        onClick={focusingLine}
+                    ></input>
+                    <div 
+                        className="checkbox"
+                        onClick={/*!stateData.checkbox1 && */!stateData.checkbox2Confirmed ? () => checkboxClick2() : null}
+                        style={style2}
+                    ><span className="pipe">{[pipe2, pipe2C]}</span></div>
+                    {state.inputField[number - 1].fieldNumberAndOrangeRuleItem === "" ?
+                        <OrangeRuleBox 
+                            sidingStyle={sidingStyle}
+                            orangeRuleBox={() => orangeRuleBox(2)} 
+                            orangeRuleBoxState={orangeRuleBoxState2} 
+                            orangeRuleItem={orangeRuleItem}
+                            state={state}
+                            number={number}
+                            checkboxConfirmer={checkboxConfirmer}
+                            fieldNumberAndOrangeRuleItem={fieldNumberAndOrangeRuleItem}
+                        /> :
+                        <div className="rule-result">{state.inputField[number - 1].fieldNumberAndOrangeRuleItem}</div>
+                    }
+                </div>
+                <div className="branchcloser" ><BranchCloser checkBox={stateData.whichCheckbox} rowNumber={stateData.rowNumbers} /></div>
+
+                {stateData.expanded && stateData.sidingStyle.gridColumnStart !== "unset" ?
+                <div>
+                    <div className="wrap stacking" onMouseUp={() => focus(stateData.fieldNumber)} >
+                    <span>{multiRowCounter}.</span>
                     <input 
                         id="1"
                         type="text" 
@@ -85,44 +118,11 @@ export default function StackingField( {
                     }
                 </div>
                 <div className="branchcloser" ><BranchCloser checkBox={stateData.whichCheckbox} rowNumber={stateData.rowNumbers} /></div>
+                </div>
+                    :
+                    null
+                }
 
-                    {stateData.expanded && stateData.sidingStyle.gridColumnStart !== "unset" ?
-
-                    <div>
-                        <div className="wrap stacking" onMouseUp={() => focus(stateData.fieldNumber)} >
-                            <span>{multiRowCounter}.</span>
-                            <input 
-                                id="2"
-                                type="text" 
-                                placeholder="Enter a formula" 
-                                value={stateData.fieldText2}
-                                onChange={inputChange2}
-                                onClick={focusingLine}
-                            ></input>
-                            <div 
-                                className="checkbox"
-                                onClick={!stateData.checkbox2Confirmed ? () => checkboxClick2() : null}
-                                style={style2}
-                            ><span className="pipe">{[pipe2, pipe2C]}</span></div>
-                            {state.inputField[number - 1].fieldNumberAndOrangeRuleItem === "" ?
-                            <OrangeRuleBox 
-                                sidingStyle={sidingStyle}
-                                orangeRuleBox={() => orangeRuleBox(2)} 
-                                orangeRuleBoxState2={orangeRuleBoxState2} 
-                                orangeRuleItem={orangeRuleItem}
-                                state={state}
-                                number={number}
-                                checkboxConfirmer={checkboxConfirmer}
-                                fieldNumberAndOrangeRuleItem={fieldNumberAndOrangeRuleItem}
-                            /> :
-                            <div className="rule-result">{state.inputField[number - 1].fieldNumberAndOrangeRuleItem}</div>
-                            }
-                        </div>
-                        <div className="branchcloser" ><BranchCloser checkBox={stateData.whichCheckbox} rowNumber={stateData.rowNumbers} /></div>
-                        </div>
-                        :
-                        null
-                    }
                 </div>
             </div>
  

@@ -1,0 +1,30 @@
+  List of Page Elements:
+logical_ops = cluster of wysiwyg buttons
+plus = plus buttons
+nodes = text boxes
+rule_selectors = cluster of rule-selection buttons
+checkboxes = checkboxes to the left of nodes
+citation_selector = box labeled 'rule' under which students cite the rule they used
+
+  Conditionals:
+//logical_ops
+if logical_ops is selected, insert corresponding character at location of text cursor.
+if user scrolls down the page, logical_ops follows.
+
+//nodes
+if text cursor is located in node, then user can input text into that node.
+
+//checkboxes
+if checkbox is selected, and splitting rule OR stacking rule is selected, then that rule should be added to the tree with its corresponding nodes and checkmark should become permanent.
+if closure rule from rule_selector is selected, AND two separate checkboxes are selected, then apply closure rule.
+if checkbox is checked, AND a rule is selected, AND a citation_selector is chosen, then the checkmark should become permanent.
+
+//plus
+if plus button is selected, then additional node is added to each open node AND plus button disappears.
+
+
+//rule_selectors
+if checkbox is selected, AND splitting rule is selected, then two branches and corresponding nodes appear below open node(s).
+if checkbox is selected, AND stacking rule is selected, then two nodes appear below open node(s).
+if rule is applied, AND user selects a character from citation_selector, then that character should appear to the right of new node(s) as well as the line number of the 'checked' node.
+if closure rule is selected AND one of the nodes selected is /not/ an open, bottom-tier node, then everything below the lowest check-marked node should be deleted. 

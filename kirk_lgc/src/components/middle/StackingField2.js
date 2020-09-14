@@ -57,7 +57,7 @@ export default function StackingField2( {
                 <div className="wrap stacking" onMouseUp={() => focus(stateData.fieldNumber)} >
                     {stateData.sidingStyle.gridColumnStart !== "unset" ? <span>{stateData.expanded ?  multiRowCounter - 1 : multiRowCounter}.</span> : null}
                     <input 
-                        id="1"
+                        id="2"
                         type="text" 
                         placeholder="Enter a formula" 
                         value={stateData.fieldText2}

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Kirk Tool for Logic Trees</title>
+	<link rel="stylesheet" type="text/css" href="css/reset.css">
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+<body>
+	<div class="one">
+		<nav>
+			<div id="stacked_logo">
+				<h4>Kirk Tool for Logic Trees</h4>
+			</div>
+
+			<a href="intro.html">Introduction to Trees</a>
+			<a href="#">The Tool</a>
+			<a href="about.html">About the Project</a>
+		</nav>
+		<div class="one_spacer">
+		</div>
+		<header>
+			<h1 id="outline">An Introduction to Trees</h1>
+		</header>
+		<div class="one_spacer">
+		</div>
+	</div>
+	<div class="two">
+		<div class="two_spacer">
+			<h3>Why Truth Trees?</h3>
+			<div class="paragraph_box">
+				<p>
+					Unlike truth tables, truth trees represent only the assignments of True to sentences. Starting from the original statement, we ask at each step, “Under what conditions (or interpretations) would this statement be True?” Then, we write down those conditions in a systematic way. At each step, then, we only indicate when a statement would be ‘True’, NOT ‘False’. When we complete a tree, we “read up” through the “branches” for the truth values that would make the statement true. So a big difference between tables and trees is that, while a table begins with showing all possible combinations of truth values, a tree shows those values that would make the 	statement true (if it is possible for it to be true).
+				</p>
+			</div>
+		</div>
+		<div class="two_spacer">
+			<img src="images/tree.png">
+		</div>
+		
+		<!-- 
+		<div class="two_spacer">
+			<img src="images/transparent_table.png">
+		</div>
+		<div class="two_spacer">
+			<div class="paragraph_box">
+				<p>
+					We can see how the truth tree (left) graphically demonstrates the information displayed in the truth table (above).
+					In order to see on which valuation the sentence is true, we start at the 'leaf', or 'node', which is open-- i.e. it does not end with an X. Here, there are two leaves, both on line 6. 
+					We 'read up' through the branches to find the valuation on which the sentence is true. Here, 'not B', 'C', and 'A' are the values of the variables on which the sentence is true. 
+				</p>
+			</div>
+		</div>
+		 -->
+
+	</div>
+	<div class="three">
+		<div class="three_spacer">
+			<h3>How Do Truth Trees Work?</h3>
+			<div class="paragraph_box">
+				<p>
+					The initial set of sentences at the top form the root. We apply tree rules to these sentences to grow the tree. The tree rules represent the different conditions under which a type of sentence in TFL is true. By applying these rules, we are able to decompose complex sentences into simpler ones. Once a rule has been applied to a sentence the sentence is checked (X) to indicate that we’re done with it. To the left of the tree is a column that shows the line number for each rule application of the tree. To the right of the tree is our 'citation' process. A branch is the set of sentences obtained by starting at the bottom of the tree and reading upward through the tree along a series of lines. The sentences at the end of each branch are called leaves. A completed branch is a branch all of whose complex sentences have been checked and whose leaf is either an atomic sentence or the negation of an atomic sentence. 
+				</p>
+			</div>
+		</div>
+		<div>
+			<iframe width="560" height="315" src="https://www.youtube.com/embed/C-u5WLJ9Yk4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+		</div>
+		
+	</div>
+	<div class="four">
+		
+	</div>
+</body>
+</html>
